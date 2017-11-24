@@ -124,9 +124,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     return;
   }
 
-  _overlayView.passThroughTouches = YES;
+  _overlayView.passThroughTouches = NO;
   _overlayView.backgroundColor = [UIColor clearColor];
-  _overlayView.frame = self.view.bounds;
+  _overlayView.frame = CGRectMake(0.0f, self.view.bounds.size.height - 100.0f, self.view.bounds.size.width, 100.0f);
   [self.view addSubview:_overlayView];
 }
 
