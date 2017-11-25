@@ -125,14 +125,35 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   }
 
   _overlayView.passThroughTouches = NO;
+  _overlayView.opaque = NO;
   _overlayView.backgroundColor = [UIColor clearColor];
-  _overlayView.frame = CGRectMake(0.0f, self.view.bounds.size.height - 100.0f, self.view.bounds.size.width, 100.0f);
+
+  _overlayView.frame = CGRectMake(0.0f, self.view.bounds.size.height + 10.0f, self.view.bounds.size.width, 100.0f);
+
+  overlayView.layer.masksToBounds = NO;
+  overlayView.layer.shadowOffset = CGSizeMake(0, -5);
+  overlayView.layer.shadowRadius = 5;
+  overlayView.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
+  overlayView.layer.shadowOpacity = 0.1;
+  
+  UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleProminent];
+  UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+  blurEffectView.frame = _overlayView.bounds;
+  blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
   [self.view addSubview:_overlayView];
+  
+  [_overlayView addSubview:blurEffectView];
+  [_overlayView sendSubviewToBack:blurEffectView];
+
+  [UIView animateKeyframesWithDuration: 0.5 delay: 0.0 options: UIViewAnimationOptionTransitionNone animations:^{
+    _overlayView.frame = CGRectMake(0.0f, self.view.bounds.size.height - 100.0f, self.view.bounds.size.width, 100.0f);
+  } completion:^(BOOL finished) {}];
 }
 
 - (void)viewDidLayoutSubviews {
   [super viewDidLayoutSubviews];
-  
+
   if (_overlayView) {
     [self.view bringSubviewToFront:_overlayView];
   }
